@@ -1,4 +1,4 @@
-let chessBord = document.getElementById('chessBord');
+let chessBord = document.getElementById('chessBoard');
 
 for(i = 1; i < 9; i++){
     let box1 = document.createElement('div')
@@ -8,7 +8,7 @@ for(i = 1; i < 9; i++){
     else{
         box1.style.background = 'white'
     }
-    chessContainer.appendChild(box1)
+    chessBord.appendChild(box1)
 }
 
 for(i = 1; i < 9; i++){
@@ -19,7 +19,7 @@ for(i = 1; i < 9; i++){
     else{
         box2.style.background = 'black'
     }
-    chessContainer.appendChild(box2)
+    chessBord.appendChild(box2)
 }
 
 for(i = 1; i < 9; i++){
@@ -30,7 +30,7 @@ for(i = 1; i < 9; i++){
     else{
         box3.style.background = 'white'
     }
-    chessContainer.appendChild(box3)
+    chessBord.appendChild(box3)
 }
 
 for(i = 1; i < 9; i++){
@@ -41,7 +41,7 @@ for(i = 1; i < 9; i++){
     else{
         box4.style.background = 'black'
     }
-    chessContainer.appendChild(box4)
+    chessBord.appendChild(box4)
 }
 
 
@@ -53,7 +53,7 @@ for(i = 1; i < 9; i++){
     else{
         box5.style.background = 'white'
     }
-    chessContainer.appendChild(box5)
+    chessBord.appendChild(box5)
 }
 
 
@@ -65,7 +65,7 @@ for(i = 1; i < 9; i++){
     else{
         box6.style.background = 'black'
     }
-    chessContainer.appendChild(box6)
+    chessBord.appendChild(box6)
 }
 
 for(i = 1; i < 9; i++){
@@ -76,7 +76,7 @@ for(i = 1; i < 9; i++){
     else{
         box7.style.background = 'white'
     }
-    chessContainer.appendChild(box7)
+    chessBord.appendChild(box7)
 }
 
 for(i = 1; i < 9; i++){
@@ -87,5 +87,5 @@ for(i = 1; i < 9; i++){
     else{
         box8.style.background = 'black'
     }
-    chessContainer.appendChild(box8)
+    chessBord.appendChild(box8)
 }
