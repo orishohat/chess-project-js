@@ -1,4 +1,4 @@
-let chessContainer = document.getElementById('chessContainer')
+let chessBord = document.getElementById('chessBord');
 
 for(i = 1; i < 9; i++){
     let box1 = document.createElement('div')
