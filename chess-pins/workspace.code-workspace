@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "תיקיה ללא שם",
+			"path": "../../תיקיה ללא שם"
+		},
+		{
+			"name": "chess-project-js66",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "chess-project-js66"
+	}
+}

@@ -1,160 +1,117 @@
+
+// Add all pieces to the board "from js list"
+// When user clicks, show possible movements by a different color, without worrying about other pieces (as if the piece was along on the board).
+
 const BOARD_SIZE = 8;
-var prevcolor = "white";
-var previd = "cell-0_3";
-// let chessBord = document.getElementById('chessBoard');
+const WHITE_PLAYER = 'white';
+const DARK_PLAYER = 'dark';
 
+let selectedCell;
+let pieces = [];
 
-// for(i = 1; i < 9; i++){
-//     let box1 = document.createElement('div')
-//     if(i % 2 == 0){
-//         box1.style.background = 'black'
-//     }
-//     else{
-//         box1.style.background = 'white'
-//     }
-//     chessBord.appendChild(box1)
-// }
-
-// for(i = 1; i < 9; i++){
-//     let box2 = document.createElement('div')
-//     if(i % 2 == 0){
-//         box2.style.background = 'white'
-//     }
-//     else{
-//         box2.style.background = 'black'
-//     }
-//     chessBord.appendChild(box2)
-// }
-
-// for(i = 1; i < 9; i++){
-//     let box3 = document.createElement('div')
-//     if(i % 2 == 0){
-//         box3.style.background = 'black'
-//     }
-//     else{
-//         box3.style.background = 'white'
-//     }
-//     chessBord.appendChild(box3)
-// }
-
-// for(i = 1; i < 9; i++){
-//     let box4 = document.createElement('div')
-//     if(i % 2 == 0){
-//         box4.style.background = 'white'
-//     }
-//     else{
-//         box4.style.background = 'black'
-//     }
-//     chessBord.appendChild(box4)
-// }
-
-
-// for(i = 1; i < 9; i++){
-//     let box5 = document.createElement('div')
-//     if(i % 2 == 0){
-//         box5.style.background = 'black'
-//     }
-//     else{
-//         box5.style.background = 'white'
-//     }
-//     chessBord.appendChild(box5)
-// }
-
-
-// for(i = 1; i < 9; i++){
-//     let box6 = document.createElement('div')
-//     if(i % 2 == 0){
-//         box6.style.background = 'white'
-//     }
-//     else{
-//         box6.style.background = 'black'
-//     }
-//     chessBord.appendChild(box6)
-// }
-
-// for(i = 1; i < 9; i++){
-//     let box7 = document.createElement('div')
-//     if(i % 2 == 0){
-//         box7.style.background = 'black'
-//     }
-//     else{
-//         box7.style.background = 'white'
-//     }
-//     chessBord.appendChild(box7)
-// }
-
-// for(i = 1; i < 9; i++){
-//     let box8 = document.createElement('div')
-//     if(i % 2 == 0){
-//         box8.style.background = 'white'
-//     }
-//     else{
-//         box8.style.background = 'black'
-//     }
-//     chessBord.appendChild(box8)
-// }
-
-chessBoard()
-
-function addImage(cell, type, name){
-    const image = document.createElement('img');
-    image.src = 'chess-pins/' + type + '/' + name + '.png';
-    cell.appendChild(image);
+class Piece {
+  constructor(row, col, type, player) {
+    this.row = row;
+    this.col = col;
+    this.type = type;
+    this.player = player;
   }
+}
 
+function getInitialBoard() {
+  let result = [];
+  result.push(new Piece(0, 0, "rook", WHITE_PLAYER))
+  result.push(new Piece(0, 1, "knight", WHITE_PLAYER))
+  result.push(new Piece(0, 2, "bishop", WHITE_PLAYER))
+  result.push(new Piece(0, 3, "queen", WHITE_PLAYER))
+  result.push(new Piece(0, 4, "king", WHITE_PLAYER))
+  result.push(new Piece(0, 5, "bishop", WHITE_PLAYER))
+  result.push(new Piece(0, 6, "knight", WHITE_PLAYER))
+  result.push(new Piece(0, 7, "rook", WHITE_PLAYER))
+  result.push(new Piece(1, 0, "pawn", WHITE_PLAYER))
+  result.push(new Piece(1, 1, "pawn", WHITE_PLAYER))
+  result.push(new Piece(1, 2, "pawn", WHITE_PLAYER))
+  result.push(new Piece(1, 3, "pawn", WHITE_PLAYER))
+  result.push(new Piece(1, 4, "pawn", WHITE_PLAYER))
+  result.push(new Piece(1, 5, "pawn", WHITE_PLAYER))
+  result.push(new Piece(1, 6, "pawn", WHITE_PLAYER))
+  result.push(new Piece(1, 7, "pawn", WHITE_PLAYER))
 
+  result.push(new Piece(7, 0, "rook", DARK_PLAYER))
+  result.push(new Piece(7, 1, "knight", DARK_PLAYER))
+  result.push(new Piece(7, 2, "bishop", DARK_PLAYER))
+  result.push(new Piece(7, 3, "queen", DARK_PLAYER))
+  result.push(new Piece(7, 4, "king", DARK_PLAYER))
+  result.push(new Piece(7, 5, "bishop", DARK_PLAYER))
+  result.push(new Piece(7, 6, "knight", DARK_PLAYER))
+  result.push(new Piece(7, 7, "rook", DARK_PLAYER))
+  result.push(new Piece(6, 0, "pawn", DARK_PLAYER))
+  result.push(new Piece(6, 1, "pawn", DARK_PLAYER))
+  result.push(new Piece(6, 2, "pawn", DARK_PLAYER))
+  result.push(new Piece(6, 3, "pawn", DARK_PLAYER))
+  result.push(new Piece(6, 4, "pawn", DARK_PLAYER))
+  result.push(new Piece(6, 5, "pawn", DARK_PLAYER))
+  result.push(new Piece(6, 6, "pawn", DARK_PLAYER))
+  result.push(new Piece(6, 7, "pawn", DARK_PLAYER))
+  return result;
+}
 
-function addImageByIndex(cell, type, index) {
-    if (index === 0 || index === 7) {
-      addImage(cell, type, 'rook');
-    } else if (index === 1 || index === 6) {
-      addImage(cell, type, 'knight');
-    } else if (index === 2 || index === 5) {
-      addImage(cell, type, 'bishop');
-    } else if (index === 3) {
-      addImage(cell, type, 'king');
-    } else if (index === 4) {
-      addImage(cell, type, 'queen');
-    }
+function addImage(cell, player, name) {
+  const image = document.createElement('img');
+  image.src = 'chess-pins/' + player + '/' + name + '.png';
+  cell.appendChild(image);
+}
+
+function addImageByIndex(cell, player, index) {
+  if (index === 0 || index === 7) {
+    addImage(cell, player, 'rook');
+  } else if (index === 1 || index === 6) {
+    addImage(cell, player, 'knight');
+  } else if (index === 2 || index === 5) {
+    addImage(cell, player, 'bishop');
+  } else if (index === 3) {
+    addImage(cell, player, 'king');
+  } else if (index === 4) {
+    addImage(cell, player, 'queen');
   }
-  
+}
 
-  function chessBoard() {
-    const table1 = document.createElement('table');
-    document.body.appendChild(table1);
-    for (let i = 0; i < BOARD_SIZE; i++) {
-      const row = table1.insertRow();
-      for (let j = 0; j < BOARD_SIZE; j++) {
-        const cell = row.insertCell();
-        cell.id = "cell-" + i.toString() + "_" + j.toString();
-        cell.onclick = function(event) {
-            alert('chosen' + event.currentTarget.id);
-            document.getElementById(previd).style.background = prevcolor;
-            prevcolor = document.getElementById(event.currentTarget.id).style.background ;
-            previd = event.currentTarget.id;
-            document.getElementById(event.currentTarget.id).style.background = "blue";
-            
-           
-         };
-        if ((i + j) % 2 === 0) {
-          cell.style.backgroundColor = 'white';
-        } else {
-          cell.style.backgroundColor = 'red';
-        }
-        cell.style.height = "90px";
-        cell.style.width = "90px";
-  
-        if (i === 0) {
-          addImageByIndex(cell, "white" , j);
-        } else if (i === 1) {
-          addImage(cell, "white", 'pawn');
-        } else if (i === 6) {
-          addImage(cell, "black", 'pawn');
-        } else if (i === 7) {
-          addImageByIndex(cell, "black" , j);
-        }
+function onCellClick(event) {
+  if (selectedCell !== undefined) {
+    selectedCell.classList.remove('selected');
+  }
+  selectedCell = event.currentTarget;
+  selectedCell.classList.add('selected');
+}
+
+function chessBoard() {
+  const table1 = document.createElement('table');
+  document.body.appendChild(table1);
+  for (let i = 0; i < BOARD_SIZE; i++) {
+    const row = table1.insertRow();
+    for (let j = 0; j < BOARD_SIZE; j++) {
+      const cell = row.insertCell();
+      cell.id = "cell-" + i.toString() + "_" + j.toString();
+      if ((i + j) % 2 === 0) {
+        cell.className = 'light-cell';
+      } else {
+        cell.className = 'dark-cell';
       }
+      cell.addEventListener('click', onCellClick);
     }
   }
+  pieces = getInitialBoard();
+
+  for (let piece of pieces) {
+    addImage(table1.rows[piece.row].cells[piece.col], piece.player, piece.type);
+  }
+}
+
+window.addEventListener('load', chessBoard);
+
+
+
+
+  
   
   
