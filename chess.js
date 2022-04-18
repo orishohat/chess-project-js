@@ -76,12 +76,16 @@ function addImageByIndex(cell, player, index) {
   }
 }
 
-function onCellClick(event) {
-  if (selectedCell !== undefined) {
+
+function onCellClick(e) {
+  console.log(e.currentTarget);
+  if (selectedCell !== undefined){
     selectedCell.classList.remove('selected');
   }
-  selectedCell = event.currentTarget;
-  selectedCell.classList.add('selected');
+
+  selectedCell = e.currentTarget;
+  e.currentTarget.classList.add('selected');
+  console.log('I was clicked ;)');
 }
 
 function chessBoard() {

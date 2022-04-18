@@ -24,3 +24,7 @@ table {
     width: 90px;
     height: 90px;
   }
+
+  .selected{
+      background: rgb(105, 183, 211);
+  }
