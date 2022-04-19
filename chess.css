@@ -1,6 +1,7 @@
 h1{
-    font-size: 20px;
+    font-size: 40px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
 }
 
 body{
@@ -15,21 +16,23 @@ table {
 
 .light-cell {
   background: rgb(211, 210, 210);
-  width: 45px;
-  height: 45px;
+  width: 90px;
+  height: 90px;
 }
 
 .dark-cell {
   background: rgb(63, 63, 63);
-  width: 45px;
-  height: 45px;
+  width: 90px;
+  height: 90px;
 }
 
 .selected{
   background: rgb(105, 183, 211);
 }
 
-
+.possible-move {
+  background: rgb(34, 109, 201);
+}
 
  
 

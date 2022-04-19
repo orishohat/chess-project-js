@@ -2,6 +2,7 @@ const BOARD_SIZE = 8;
 const WHITE_PLAYER = 'white';
 const DARK_PLAYER = 'dark';
 
+
 const PAWN = 'pawn';
 const ROOK = 'rook';
 const KNIGHT = 'knight';
@@ -11,6 +12,7 @@ const QUEEN = 'queen';
 
 let selectedCell;
 let pieces = [];
+let table1;
 
 class Piece {
   constructor(row, col, type, player) {
@@ -33,7 +35,7 @@ getPossibleMoves() {
   } else if (this.type === BISHOP) {
     // TODO: Get moves
   } else if (this.type === KING) {
-    // TODO: Get moves
+    relativeMoves = this.getKingRelativeMoves();
   } else if (this.type === QUEEN) {
     // TODO: Get moves
   } else {
@@ -80,15 +82,37 @@ getRookRelativeMoves() {
 }
 }
 
+class BoardData {
+  constructor(pieces) {
+    this.pieces = pieces;
+  }
+
+  getPiece(row, col) {
+  }
+}
+
+function getInitialBoard() {
+  let result = [];
+  addPieces(result, 0, WHITE_PLAYER);
+  addPieces(result, 7, DARK_PLAYER);
+
+  for (let i = 0; i < BOARD_SIZE; i++) {
+    result.push(new Piece(1, i, PAWN, WHITE_PLAYER));
+    result.push(new Piece(6, i, PAWN, DARK_PLAYER));
+  }
+  return result;
+}
+
+
 function getInitialPieces() {
   let result = [];
 
   addFirstRowPieces(result, 0, WHITE_PLAYER);
-  addFirstRowPieces(result, 7, BLACK_PLAYER);
+  addFirstRowPieces(result, 7, DARK_PLAYER);
 
   for (let i = 0; i < BOARD_SIZE; i++) {
     result.push(new Piece(1, i, PAWN, WHITE_PLAYER));
-    result.push(new Piece(6, i, PAWN, BLACK_PLAYER));
+    result.push(new Piece(6, i, PAWN, DARK_PLAYER));
   }
   return result;
 }
@@ -141,20 +165,30 @@ function addImage(cell, player, name) {
 function onCellClick(event, row, col) {
   console.log('row', row);
   console.log('col', col);
-  
   for (let i = 0; i < BOARD_SIZE; i++) {
     for (let j = 0; j < BOARD_SIZE; j++) {
-      table.rows[i].cells[j].classList.remove('possible-move');
+      table1.rows[i].cells[j].classList.remove('possible-move');
     }
   }
-  const piece = boardData.getPiece(row, col);
-  if (piece !== undefined) {
-    let possibleMoves = piece.getPossibleMoves();
-    for (let possibleMove of possibleMoves) {
-      const cell = table.rows[possibleMove[0]].cells[possibleMove[1]];
-      cell.classList.add('possible-move');
+  
+  
+  for (let piece of pieces) {
+    if (piece.row === row && piece.col === col) {
+      console.log(piece);
+      let possibleMoves = piece.getPossibleMoves();
+      for (let possibleMove of possibleMoves)
+      table1.rows[possibleMove[0]].cells[possibleMove[1]].classList.add('possible-move');
     }
   }
+
+  // const piece = boardData.getPiece(row, col);
+  // if (piece !== undefined) {
+  //   let possibleMoves = piece.getPossibleMoves();
+  //   for (let possibleMove of possibleMoves) {
+  //     const cell = table.rows[possibleMove[0]].cells[possibleMove[1]];
+  //     cell.classList.add('possible-move');
+  //   }
+  // }
 
   if (selectedCell !== undefined) {
     selectedCell.classList.remove('selected');
@@ -180,19 +214,19 @@ function addImageByIndex(cell, player, index) {
 }
 
 
-function onCellClick(e) {
-  console.log(e.currentTarget);
-  if (selectedCell !== undefined){
-    selectedCell.classList.remove('selected');
-  }
+// function onCellClick(e) {
+//   console.log(e.currentTarget);
+//   if (selectedCell !== undefined){
+//     selectedCell.classList.remove('selected');
+//   }
 
-  selectedCell = e.currentTarget;
-  e.currentTarget.classList.add('selected');
-  console.log('I was clicked ;)');
-}
+//   selectedCell = e.currentTarget;
+//   e.currentTarget.classList.add('selected');
+//   console.log('I was clicked ;)');
+// }
 
 function chessBoard() {
-  const table1 = document.createElement('table');
+  table1 = document.createElement('table');
   document.body.appendChild(table1);
   for (let i = 0; i < BOARD_SIZE; i++) {
     const row = table1.insertRow();
@@ -204,10 +238,13 @@ function chessBoard() {
       } else {
         cell.className = 'dark-cell';
       }
-      cell.addEventListener('click', onCellClick);
+      cell.addEventListener('click', function (){
+        onCellClick(event,i,j)
+      });
     }
   }
   pieces = getInitialBoard();
+  pieces[0].getPossibleMoves();
 
   for (let piece of pieces) {
     addImage(table1.rows[piece.row].cells[piece.col], piece.player, piece.type);
