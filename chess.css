@@ -10,21 +10,26 @@ body{
 
 
 table {
-    margin: 20px;
-  }
-  
-  .light-cell {
-    background: rgb(211, 210, 210);
-    width: 90px;
-    height: 90px;
-  }
-  
-  .dark-cell {
-    background: rgb(63, 63, 63);
-    width: 90px;
-    height: 90px;
-  }
+  margin: 50px;
+}
 
-  .selected{
-      background: rgb(105, 183, 211);
-  }
+.light-cell {
+  background: rgb(211, 210, 210);
+  width: 45px;
+  height: 45px;
+}
+
+.dark-cell {
+  background: rgb(63, 63, 63);
+  width: 45px;
+  height: 45px;
+}
+
+.selected{
+  background: rgb(105, 183, 211);
+}
+
+
+
+ 
+

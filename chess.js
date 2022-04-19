@@ -1,10 +1,13 @@
-
-// Add all pieces to the board "from js list"
-// When user clicks, show possible movements by a different color, without worrying about other pieces (as if the piece was along on the board).
-
 const BOARD_SIZE = 8;
 const WHITE_PLAYER = 'white';
 const DARK_PLAYER = 'dark';
+
+const PAWN = 'pawn';
+const ROOK = 'rook';
+const KNIGHT = 'knight';
+const BISHOP = 'bishop';
+const KING = 'king';
+const QUEEN = 'queen';
 
 let selectedCell;
 let pieces = [];
@@ -16,7 +19,80 @@ class Piece {
     this.type = type;
     this.player = player;
   }
+
+
+getPossibleMoves() {
+  // Get relative moves
+  let relativeMoves;
+  if (this.type === PAWN) {
+    relativeMoves = this.getPawnRelativeMoves();
+  } else if (this.type === ROOK) {
+    relativeMoves = this.getRookRelativeMoves();
+  } else if (this.type === KNIGHT) {
+    // TODO: Get moves
+  } else if (this.type === BISHOP) {
+    // TODO: Get moves
+  } else if (this.type === KING) {
+    // TODO: Get moves
+  } else if (this.type === QUEEN) {
+    // TODO: Get moves
+  } else {
+    console.log("Unknown type", type)
+  }
+  console.log('relativeMoves', relativeMoves);
+
+  // Get absolute moves
+  let absoluteMoves = [];
+  for (let relativeMove of relativeMoves) {
+    const absoluteRow = this.row + relativeMove[0];
+    const absoluteCol = this.col + relativeMove[1];
+    absoluteMoves.push([absoluteRow, absoluteCol]);
+  }
+  // console.log('absoluteMoves', absoluteMoves);
+
+  // Get filtered absolute moves
+  let filteredMoves = [];
+  for (let absoluteMove of absoluteMoves) {
+    const absoluteRow = absoluteMove[0];
+    const absoluteCol = absoluteMove[1];
+    if (absoluteRow >= 0 && absoluteRow <= 7 && absoluteCol >= 0 && absoluteCol <= 7) {
+      filteredMoves.push(absoluteMove);
+    }
+  }
+  console.log('filteredMoves', filteredMoves);
+  return filteredMoves;
 }
+
+getPawnRelativeMoves() {
+  // TODO: Give different answer to black player
+  return [[1, 0]];
+}
+
+getRookRelativeMoves() {
+  let result = [];
+  for (let i = 1; i < BOARD_SIZE; i++) {
+    result.push([i, 0]);
+    result.push([-i, 0]);
+    result.push([0, i]);
+    result.push([0, -i]);
+  }
+  return result;
+}
+}
+
+function getInitialPieces() {
+  let result = [];
+
+  addFirstRowPieces(result, 0, WHITE_PLAYER);
+  addFirstRowPieces(result, 7, BLACK_PLAYER);
+
+  for (let i = 0; i < BOARD_SIZE; i++) {
+    result.push(new Piece(1, i, PAWN, WHITE_PLAYER));
+    result.push(new Piece(6, i, PAWN, BLACK_PLAYER));
+  }
+  return result;
+}
+
 
 function getInitialBoard() {
   let result = [];
@@ -60,6 +136,33 @@ function addImage(cell, player, name) {
   const image = document.createElement('img');
   image.src = 'chess-pins/' + player + '/' + name + '.png';
   cell.appendChild(image);
+}
+
+function onCellClick(event, row, col) {
+  console.log('row', row);
+  console.log('col', col);
+  
+  for (let i = 0; i < BOARD_SIZE; i++) {
+    for (let j = 0; j < BOARD_SIZE; j++) {
+      table.rows[i].cells[j].classList.remove('possible-move');
+    }
+  }
+  const piece = boardData.getPiece(row, col);
+  if (piece !== undefined) {
+    let possibleMoves = piece.getPossibleMoves();
+    for (let possibleMove of possibleMoves) {
+      const cell = table.rows[possibleMove[0]].cells[possibleMove[1]];
+      cell.classList.add('possible-move');
+    }
+  }
+
+  if (selectedCell !== undefined) {
+    selectedCell.classList.remove('selected');
+  }
+
+  
+  selectedCell = event.currentTarget;
+  selectedCell.classList.add('selected');
 }
 
 function addImageByIndex(cell, player, index) {
@@ -116,6 +219,3 @@ window.addEventListener('load', chessBoard);
 
 
 
-  
-  
-  
