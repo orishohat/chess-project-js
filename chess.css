@@ -5,13 +5,13 @@ h1{
 }
 
 body{
-    background: rgb(168, 211, 141);
+    background: rgb(130, 222, 196);
     margin-top: 120px;
 }
 
 
 table {
-  margin: 50px;
+  margin: center;
 }
 
 .light-cell {
