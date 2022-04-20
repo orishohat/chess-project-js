@@ -238,15 +238,6 @@ function onCellClick(event, row, col) {
     }
   }
 
-  // const piece = boardData.getPiece(row, col);
-  // if (piece !== undefined) {
-  //   let possibleMoves = piece.getPossibleMoves();
-  //   for (let possibleMove of possibleMoves) {
-  //     const cell = table.rows[possibleMove[0]].cells[possibleMove[1]];
-  //     cell.classList.add('possible-move');
-  //   }
-  // }
-
   if (selectedCell !== undefined) {
     selectedCell.classList.remove('selected');
   }
@@ -270,17 +261,6 @@ function addImageByIndex(cell, player, index) {
   }
 }
 
-
-// function onCellClick(e) {
-//   console.log(e.currentTarget);
-//   if (selectedCell !== undefined){
-//     selectedCell.classList.remove('selected');
-//   }
-
-//   selectedCell = e.currentTarget;
-//   e.currentTarget.classList.add('selected');
-//   console.log('I was clicked ;)');
-// }
 
 function chessBoard() {
   table1 = document.createElement('table');
