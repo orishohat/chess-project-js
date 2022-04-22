@@ -10,6 +10,8 @@ const BISHOP = 'bishop';
 const KING = 'king';
 const QUEEN = 'queen';
 
+var piecesInitOrder = [ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK]
+
 let selectedCell;
 let pieces = [];
 let table1;
@@ -24,6 +26,15 @@ class Piece {
 
 
   getPossibleMoves() {
+  
+  let relativeMove = this.getRelativeMoves();
+  let absoluteMoves = this.getabsoluteMoves(relativeMove);
+  let filteredMoves= this.getfilteredMoves(absoluteMoves);  
+  return filteredMoves;
+ }
+  
+
+  getRelativeMoves() {
     let relativeMoves;
     if (this.type === 'pawn') {
       relativeMoves = this.getPawnRelativeMoves();
@@ -40,16 +51,20 @@ class Piece {
     } else {
       console.log("Unknown type", type)
     }
-    // console.log('relativeMoves', relativeMoves);
+    return relativeMoves;
+  }
 
+  getabsoluteMoves(relativeMoves){
     let absoluteMoves = [];
     for (let relativeMove of relativeMoves) {
       const absoluteRow = this.row + relativeMove[0];
       const absoluteCol = this.col + relativeMove[1];
       absoluteMoves.push([absoluteRow, absoluteCol]);
     }
-    // console.log('absoluteMoves', absoluteMoves);
+    return absoluteMoves;
+  }
 
+  getfilteredMoves(absoluteMoves){
     let filteredMoves = [];
     for (let absoluteMove of absoluteMoves) {
       const absoluteRow = absoluteMove[0];
@@ -57,10 +72,10 @@ class Piece {
       if (absoluteRow >= 0 && absoluteRow <= 7 && absoluteCol >= 0 && absoluteCol <= 7) {
         filteredMoves.push(absoluteMove);
       }
-      // console.log('filteredMoves', filteredMoves);
     }
     return filteredMoves;
   }
+
 
   getPawnRelativeMoves() {
     let result = [];
@@ -88,7 +103,6 @@ class Piece {
 
   getKnightRelativeMoves() {
     let result = [];
-    
       result.push([-2, 1]);
       result.push([-1, 2]);
       result.push([1, 2]);
@@ -140,77 +154,31 @@ class Piece {
 } 
 
 class BoardData {
-  constructor(pieces) {
-    this.pieces = pieces;
+  constructor() {
+    this.data = getInitialPiecesBoard();
   }
-
+  
   getPiece(row, col) {
   }
 }
 
-function getInitialBoard() {
+function getInitialPiecesBoard() {
   let result = [];
-  addPieces(result, 0, WHITE_PLAYER);
-  addPieces(result, 7, DARK_PLAYER);
+  getInitialPieces(result, 0, WHITE_PLAYER)
 
   for (let i = 0; i < BOARD_SIZE; i++) {
     result.push(new Piece(1, i, PAWN, WHITE_PLAYER));
     result.push(new Piece(6, i, PAWN, DARK_PLAYER));
   }
+  getInitialPieces(result, 7, DARK_PLAYER)
   return result;
 }
 
 
-function getInitialPieces() {
-  let result = [];
-
-  addFirstRowPieces(result, 0, WHITE_PLAYER);
-  addFirstRowPieces(result, 7, DARK_PLAYER);
-
-  for (let i = 0; i < BOARD_SIZE; i++) {
-    result.push(new Piece(1, i, PAWN, WHITE_PLAYER));
-    result.push(new Piece(6, i, PAWN, DARK_PLAYER));
-  }
-  return result;
-}
-
-
-function getInitialBoard() {
-  let result = [];
-  result.push(new Piece(0, 0, "rook", WHITE_PLAYER))
-  result.push(new Piece(0, 1, "knight", WHITE_PLAYER))
-  result.push(new Piece(0, 2, "bishop", WHITE_PLAYER))
-  result.push(new Piece(0, 3, "queen", WHITE_PLAYER))
-  result.push(new Piece(0, 4, "king", WHITE_PLAYER))
-  result.push(new Piece(0, 5, "bishop", WHITE_PLAYER))
-  result.push(new Piece(0, 6, "knight", WHITE_PLAYER))
-  result.push(new Piece(0, 7, "rook", WHITE_PLAYER))
-  result.push(new Piece(1, 0, "pawn", WHITE_PLAYER))
-  result.push(new Piece(1, 1, "pawn", WHITE_PLAYER))
-  result.push(new Piece(1, 2, "pawn", WHITE_PLAYER))
-  result.push(new Piece(1, 3, "pawn", WHITE_PLAYER))
-  result.push(new Piece(1, 4, "pawn", WHITE_PLAYER))
-  result.push(new Piece(1, 5, "pawn", WHITE_PLAYER))
-  result.push(new Piece(1, 6, "pawn", WHITE_PLAYER))
-  result.push(new Piece(1, 7, "pawn", WHITE_PLAYER))
-
-  result.push(new Piece(7, 0, "rook", DARK_PLAYER))
-  result.push(new Piece(7, 1, "knight", DARK_PLAYER))
-  result.push(new Piece(7, 2, "bishop", DARK_PLAYER))
-  result.push(new Piece(7, 3, "queen", DARK_PLAYER))
-  result.push(new Piece(7, 4, "king", DARK_PLAYER))
-  result.push(new Piece(7, 5, "bishop", DARK_PLAYER))
-  result.push(new Piece(7, 6, "knight", DARK_PLAYER))
-  result.push(new Piece(7, 7, "rook", DARK_PLAYER))
-  result.push(new Piece(6, 0, "pawn", DARK_PLAYER))
-  result.push(new Piece(6, 1, "pawn", DARK_PLAYER))
-  result.push(new Piece(6, 2, "pawn", DARK_PLAYER))
-  result.push(new Piece(6, 3, "pawn", DARK_PLAYER))
-  result.push(new Piece(6, 4, "pawn", DARK_PLAYER))
-  result.push(new Piece(6, 5, "pawn", DARK_PLAYER))
-  result.push(new Piece(6, 6, "pawn", DARK_PLAYER))
-  result.push(new Piece(6, 7, "pawn", DARK_PLAYER))
-  return result;
+function getInitialPieces(result, row, player) {
+  piecesInitOrder.forEach(function (value, i) {
+    result.push(new Piece(row, i, value, player));
+});
 }
 
 function addImage(cell, player, name) {
@@ -280,8 +248,9 @@ function chessBoard() {
       });
     }
   }
-  pieces = getInitialBoard();
-  pieces[0].getPossibleMoves();
+  let boardData = new BoardData(); 
+  pieces = boardData.data;
+
 
   for (let piece of pieces) {
     addImage(table1.rows[piece.row].cells[piece.col], piece.player, piece.type);
