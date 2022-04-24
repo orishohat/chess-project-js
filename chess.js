@@ -66,8 +66,8 @@ class Piece {
   getabsoluteMoves(relativeMoves){
     let absoluteMoves = [];
     for (let relativeMove of relativeMoves) {
-      const absoluteRow = this.row + relativeMove[0];
-      const absoluteCol = this.col + relativeMove[1];
+      const absoluteRow = relativeMove[0];
+      const absoluteCol = relativeMove[1];
       absoluteMoves.push([absoluteRow, absoluteCol]);
     }
     return absoluteMoves;
@@ -254,7 +254,7 @@ function onCellClick(event, row, col) {
   }
   
   
-  for (let piece of pieces) {
+  for (let piece of boardData.pieces) {
     if (piece.row === row && piece.col === col) {
       console.log(piece);
       let possibleMoves = piece.getPossibleMoves();
