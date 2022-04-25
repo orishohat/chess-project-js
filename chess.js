@@ -10,6 +10,8 @@ const BISHOP = 'bishop';
 const KING = 'king';
 const QUEEN = 'queen';
 
+const BOARD_ID = 'chess-board';
+
 var piecesInitOrder = [ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK]
 
 let selectedCell;
@@ -34,7 +36,7 @@ class Piece {
   }
 
 
-  getPossibleMoves() {
+  getPossibleMoves(boardData) {
   
   let relativeMove = this.getRelativeMoves();
   let absoluteMoves = this.getabsoluteMoves(relativeMove);
@@ -207,6 +209,14 @@ class BoardData {
     const piece = this.getPiece(row, col);
     return piece !== undefined && piece.player === player;
   }
+  removePiece(row, col) {
+    for (let i = 0; i < this.pieces.length; i++) {
+      const piece = this.pieces[i];
+      if (piece.row === row && piece.col === col) {
+        this.pieces.splice(i, 1);
+      }
+    }
+  }
 }
 
 
@@ -235,6 +245,28 @@ function addImage(cell, player, name) {
   cell.appendChild(image);
 }
 
+function showMovesForPiece(row, col) {
+  console.log('showMovesForPiece');
+  for (let i = 0; i < BOARD_SIZE; i++) {
+    for (let j = 0; j < BOARD_SIZE; j++) {
+      table1.rows[i].cells[j].classList.remove('possible-move');
+      table1.rows[i].cells[j].classList.remove('selected');
+    }
+  }
+
+    const piece = boardData.getPiece(row, col);
+    if (piece !== undefined) {
+      let possibleMoves = piece.getPossibleMoves(boardData);
+      for (let possibleMove of possibleMoves) {
+        const cell = table1.rows[possibleMove[0]].cells[possibleMove[1]];
+        cell.classList.add('possible-move');
+      }
+    }
+
+    table1.rows[row].cells[col].classList.add('selected');
+    selectedPiece = piece;
+}
+
 function onCellClick(event, row, col) {
   console.log('row', row);
   console.log('col', col);
@@ -242,7 +274,56 @@ function onCellClick(event, row, col) {
     for (let j = 0; j < BOARD_SIZE; j++) {
       table1.rows[i].cells[j].classList.remove('possible-move');
     }
+    if (selectedPiece === undefined) {
+      showMovesForPiece(row, col);
   }
+  else {
+    if (tryMove(selectedPiece, row, col)) {
+      selectedPiece = undefined;
+      chessBoard(boardData);
+    } else {
+      showMovesForPiece(row, col);
+    }
+  }
+}
+
+function tryMove(piece, row, col) {
+  const possibleMoves = piece.getPossibleMoves(boardData);
+  for (const possibleMove of possibleMoves) {
+    if (possibleMove[0] === row && possibleMove[1] === col) {
+      boardData.removePiece(row, col);
+      piece.row = row;
+      piece.col = col;
+      return true;
+    }
+  }
+  return false;
+}
+
+function initGame() {
+  boardData = new BoardData(getInitialPieces());
+  chessBoard(boardData);
+}
+
+// function createChessBoard(boardData) {
+  
+
+//   table1 = document.createElement('table');
+//   table1.id = BOARD_ID;
+//   document.body.appendChild(table);
+//   for (let row = 0; row < BOARD_SIZE; row++) {
+//     const rowElement = table.insertRow();
+//     for (let col = 0; col < BOARD_SIZE; col++) {
+//       const cell = rowElement.insertCell();
+//       if ((row + col) % 2 === 0) {
+//         cell.className = 'light-cell';
+//       } else {
+//         cell.className = 'dark-cell';
+//       }
+//       cell.addEventListener('click', (event) => onCellClick(event, row, col));
+//     }
+//   }
+// }
 
   const piece = boardData.getPiece(row, col);
   if (piece !== undefined) {
@@ -287,7 +368,12 @@ function addImageByIndex(cell, player, index) {
 }
 
 
-function chessBoard() {
+function chessBoard(boardData) {
+  table1 = document.getElementById(BOARD_ID);
+  if (table1 !== null) {
+    table1.remove();
+  }
+
   table1 = document.createElement('table');
   document.body.appendChild(table1);
   for (let i = 0; i < BOARD_SIZE; i++) {
