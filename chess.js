@@ -21,6 +21,7 @@ let boardData = [];
 let table1;
 let selectedPiece;
 
+
 class Piece {
   constructor(row, col, type, player) {
     this.row = row;
@@ -46,7 +47,7 @@ class Piece {
  }
   
 
-  getRelativeMoves() {
+  getRelativeMoves(boardData) {
     let relativeMoves;
     if (this.type === 'pawn') {
       relativeMoves = this.getPawnMoves(boardData);
@@ -269,19 +270,12 @@ function showMovesForPiece(row, col) {
 }
 
 function onCellClick(event, row, col) {
-  console.log('row', row);
-  console.log('col', col);
-  for (let i = 0; i < BOARD_SIZE; i++) {
-    for (let j = 0; j < BOARD_SIZE; j++) {
-      table1.rows[i].cells[j].classList.remove('possible-move');
-    }
-    if (selectedPiece === undefined) {
-      showMovesForPiece(row, col);
-  }
-  else {
+  if (selectedPiece === undefined) {
+    showMovesForPiece(row, col);
+  } else {
     if (tryMove(selectedPiece, row, col)) {
       selectedPiece = undefined;
-      chessBoard(boardData);
+      createChessBoard(boardData);
     } else {
       showMovesForPiece(row, col);
     }
@@ -306,70 +300,25 @@ function initGame() {
   chessBoard(boardData);
 }
 
-  const piece = boardData.getPiece(row, col);
-  if (piece !== undefined) {
-    let possibleMoves = piece.getPossibleMoves(boardData);
-    for (let possibleMove of possibleMoves) {
-      const cell = table1.rows[possibleMove[0]].cells[possibleMove[1]];
-      cell.classList.add('possible-move');
-    }
-  }
-  
-  
-  for (let piece of boardData.pieces) {
-    if (piece.row === row && piece.col === col) {
-      console.log(piece);
-      let possibleMoves = piece.getPossibleMoves();
-      for (let possibleMove of possibleMoves)
-      table1.rows[possibleMove[0]].cells[possibleMove[1]].classList.add('possible-move');
-    }
-  }
-
-  if (selectedCell !== undefined) {
-    selectedCell.classList.remove('selected');
-  }
-
-  
-  selectedCell = event.currentTarget;
-  selectedCell.classList.add('selected');
-}
-
-function addImageByIndex(cell, player, index) {
-  if (index === 0 || index === 7) {
-    addImage(cell, player, 'rook');
-  } else if (index === 1 || index === 6) {
-    addImage(cell, player, 'knight');
-  } else if (index === 2 || index === 5) {
-    addImage(cell, player, 'bishop');
-  } else if (index === 3) {
-    addImage(cell, player, 'king');
-  } else if (index === 4) {
-    addImage(cell, player, 'queen');
-  }
-}
-
-
 function chessBoard(boardData) {
   table1 = document.getElementById(BOARD_ID);
   if (table1 !== null) {
     table1.remove();
   }
 
-  table1 = document.createElement('table');
+  table1 = document.createElement('table1');
+  table1.id = BOARD_ID;
   document.body.appendChild(table1);
-  for (let i = 0; i < BOARD_SIZE; i++) {
-    const row = table1.insertRow();
-    for (let j = 0; j < BOARD_SIZE; j++) {
-      const cell = row.insertCell();
-      cell.id = "cell-" + i.toString() + "_" + j.toString();
-      if ((i + j) % 2 === 0) {
+  for (let row = 0; row < BOARD_SIZE; row++) {
+    const rowElement = table1.insertRow();
+    for (let col = 0; col < BOARD_SIZE; col++) {
+      const cell = rowElement.insertCell();
+      if ((row + col) % 2 === 0) {
         cell.className = 'light-cell';
       } else {
         cell.className = 'dark-cell';
       }
-      cell.addEventListener('click', function (){
-        onCellClick(event,i,j)
-      });
+      cell.addEventListener('click', (event) => onCellClick(event, row, col));
     }
   }
   
@@ -383,7 +332,7 @@ function chessBoard(boardData) {
 }
 
 
-window.addEventListener('load', chessBoard);
+window.addEventListener('load', initGame);
 
 
 
