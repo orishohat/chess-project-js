@@ -19,6 +19,7 @@ let pieces;
 let piece;
 let boardData = [];
 let table1;
+let selectedPiece;
 
 class Piece {
   constructor(row, col, type, player) {
@@ -304,26 +305,6 @@ function initGame() {
   boardData = new BoardData(getInitialPieces());
   chessBoard(boardData);
 }
-
-// function createChessBoard(boardData) {
-  
-
-//   table1 = document.createElement('table');
-//   table1.id = BOARD_ID;
-//   document.body.appendChild(table);
-//   for (let row = 0; row < BOARD_SIZE; row++) {
-//     const rowElement = table.insertRow();
-//     for (let col = 0; col < BOARD_SIZE; col++) {
-//       const cell = rowElement.insertCell();
-//       if ((row + col) % 2 === 0) {
-//         cell.className = 'light-cell';
-//       } else {
-//         cell.className = 'dark-cell';
-//       }
-//       cell.addEventListener('click', (event) => onCellClick(event, row, col));
-//     }
-//   }
-// }
 
   const piece = boardData.getPiece(row, col);
   if (piece !== undefined) {
