@@ -296,7 +296,6 @@ function tryMove(piece, row, col) {
 }
 
 function initGame() {
-  boardData = new BoardData(getInitialPieces());
   chessBoard(boardData);
 }
 
@@ -306,7 +305,7 @@ function chessBoard(boardData) {
     table1.remove();
   }
 
-  table1 = document.createElement('table1');
+  table1 = document.createElement('table');
   table1.id = BOARD_ID;
   document.body.appendChild(table1);
   for (let row = 0; row < BOARD_SIZE; row++) {
