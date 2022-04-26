@@ -1,6 +1,6 @@
 h1{
     font-size: 40px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Arial';
     font-weight: bold;
 }
 
@@ -11,7 +11,8 @@ body{
 
 
 table {
-  margin: center;
+  margin: auto;
+  border: 20px ridge rgb(68, 29, 208);
 }
 
 .light-cell {
