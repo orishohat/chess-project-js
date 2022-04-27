@@ -14,31 +14,37 @@ class Piece {
     }
   
     getPossibleMoves(boardData) {
-      let moves;
-      if (this.type === PAWN) {
-        moves = this.getPawnMoves(boardData);
-      } else if (this.type === ROOK) {
-        moves = this.getRookMoves(boardData);
-      } else if (this.type === KNIGHT) {
-        moves = this.getKnightMoves(boardData);
-      } else if (this.type === BISHOP) {
-        moves = this.getBishopMoves(boardData);
-      } else if (this.type === KING) {
-        moves = this.getKingMoves(boardData);
-      } else if (this.type === QUEEN) {
-        moves = this.getQueenMoves(boardData);
-      } else {
-        console.log("Unknown type", type)
-      }
+        let Moves;
+        if (this.type === PAWN) {
+          Moves = this.getPawnMoves(boardData);
+        } else if (this.type === ROOK) {
+          Moves = this.getRookMoves(boardData);
+        } else if (this.type === KNIGHT) {
+          Moves = this.getKnightMoves(boardData);
+        } else if (this.type === BISHOP) {
+          Moves = this.getBishopMoves(boardData);
+        } else if (this.type === KING) {
+          Moves = this.getKingMoves(boardData);
+        } else if (this.type === QUEEN) {
+          Moves = this.getQueenMoves(boardData);
+        } else {
+          console.log("Unknown type", type);
+        }
   
       let filteredMoves = [];
-      for (const absoluteMove of moves) {
+      for (let absoluteMove of Moves) {
         const absoluteRow = absoluteMove[0];
         const absoluteCol = absoluteMove[1];
-        if (absoluteRow >= 0 && absoluteRow <= 7 && absoluteCol >= 0 && absoluteCol <= 7) {
+        if (
+          absoluteRow >= 0 &&
+          absoluteRow <= 7 &&
+          absoluteCol >= 0 &&
+          absoluteCol <= 7
+        ) {
           filteredMoves.push(absoluteMove);
         }
       }
+      console.log("filteredMoves", filteredMoves);
       return filteredMoves;
     }
   
@@ -96,17 +102,26 @@ class Piece {
     }
   
     getKnightMoves(boardData) {
-      let result = [];
-      const relativeMoves = [[2, 1], [2, -1], [-2, 1], [-2, -1], [-1, 2], [1, 2], [-1, -2], [1, -2]];
-      for (let relativeMove of relativeMoves) {
-        let row = this.row + relativeMove[0];
-        let col = this.col + relativeMove[1];
-        if (!boardData.isPlayer(row, col, this.player)) {
-          result.push([row, col]);
+        let result = [];
+        const relativeMoves = [
+          [2, 1],
+          [2, -1],
+          [-2, 1],
+          [-2, -1],
+          [-1, 2],
+          [1, 2],
+          [-1, -2],
+          [1, -2],
+        ];
+        for (let relativeMove of relativeMoves) {
+          let row = this.row + relativeMove[0];
+          let col = this.col + relativeMove[1];
+          if (!boardData.isPlayer(row, col, this.player)) {
+            result.push([row, col]);
+          }
         }
+        return result;
       }
-      return result;
-    }
   
     getBishopMoves(boardData) {
       let result = [];
@@ -118,17 +133,27 @@ class Piece {
     }
   
     getKingMoves(boardData) {
-      let result = [];
-      const relativeMoves = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
-      for (let relativeMove of relativeMoves) {
-        let row = this.row + relativeMove[0];
-        let col = this.col + relativeMove[1];
-        if (!boardData.isPlayer(row, col, this.player)) {
-          result.push([row, col]);
+        let result = [];
+        const relativeMoves = [
+          [-1, -1],
+          [-1, 0],
+          [-1, 1],
+          [0, -1],
+          [0, 1],
+          [1, -1],
+          [1, 0],
+          [1, 1],
+        ];
+        for (let relativeMove of relativeMoves) {
+          let row = this.row + relativeMove[0];
+          let col = this.col + relativeMove[1];
+          if (!boardData.isPlayer(row, col, this.player)) {
+            result.push([row, col]);
+          }
         }
+        return result;
       }
-      return result;
-    }
+    
   
     getQueenMoves(boardData) {
       let result = this.getBishopMoves(boardData);

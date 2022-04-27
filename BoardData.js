@@ -41,3 +41,5 @@ class BoardData {
       return piece !== undefined && piece.player === player;
     }
   }
+
+
