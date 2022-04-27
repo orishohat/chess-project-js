@@ -50,6 +50,7 @@ function onCellClick(row, col) {
 function addImage(cell, player, name) {
   const image = document.createElement('img');
   image.src = 'chess-pins/' + player + '/' + name + '.png';
+  image.draggable = false;
   cell.appendChild(image);
 }
 
@@ -59,7 +60,6 @@ function chessBoard(boardData) {
     table1.remove();
   }
 
-  
   table1 = document.createElement('table');
   table1.id = CHESS_BOARD_ID;
   document.body.appendChild(table1);
@@ -76,11 +76,20 @@ function chessBoard(boardData) {
     }
   }
 
-
+ 
   for (let piece of boardData.pieces) {
     const cell = table1.rows[piece.row].cells[piece.col];
     addImage(cell, piece.player, piece.type);
   }
+
+  if (game.winner !== undefined) {
+    const winnerPopup = document.createElement('div');
+    const winner = game.winner.charAt(0).toUpperCase() + game.winner.slice(1);
+    winnerPopup.textContent = winner + ' player wins!';
+    winnerPopup.classList.add('winner-dialog');
+    table1.appendChild(winnerPopup)
+  }
+
 }
 
 function initGame() {
