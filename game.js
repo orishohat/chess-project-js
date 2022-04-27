@@ -30,3 +30,4 @@ class Game {
       return piece.getPossibleMoves(this.boardData);
     }
   }
+
