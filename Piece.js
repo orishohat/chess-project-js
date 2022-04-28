@@ -54,6 +54,15 @@ class Piece {
       if (this.player === DARK_PLAYER) {
         direction = -1;
       }
+      let oneStep = [this.row + direction, this.col];
+      let twoSteps = [this.row + direction * 2, this.col];
+
+      if (this.row === 1 || this.row === 6) {
+        if (boardData.getPiece(oneStep[0], oneStep[1]) === undefined &&
+            boardData.getPiece(twoSteps[0], twoSteps[1]) === undefined) {
+            result.push(twoSteps)
+            }
+        }
   
       let position = [this.row + direction, this.col];
       if (boardData.isEmpty(position[0], position[1])) {
